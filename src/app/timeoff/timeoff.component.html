@@ -1,0 +1,56 @@
+<h1>Time & Absence Dashboard</h1>
+<br />
+<p>Dear <strong>{{currentUser.firstName +' ' + currentUser.lastName}} </strong> how are you today!</p>
+
+<!-- <div ibmGrid [condensed]="true">
+    <div ibmRow [gutter]="true" [leftGutter]="true" [rightGutter]="true" [condensed]="false">
+        
+        <div ibmCol class="custom-class-example" [columnNumbers]="{'md': 2, 'sm': 12}">
+            <label>
+                                             
+            </label>
+            
+        </div>
+    </div>
+</div> -->
+
+<table class="table-wrapper">
+    <tr>
+        <td style="vertical-align: middle;padding-right: 1rem;">
+           <strong>Request time off</strong> 
+        </td>
+        <td>
+            <ibm-date-picker #dateEle [size]="'md'" range="true" [value]="selectedDateRange"
+            id="initial-value-datepicker" [placeholder]="'select date'" [dateFormat]="'m/d/Y'"
+            (onClose)="valueChange($event)">
+        </ibm-date-picker>
+        </td>
+    </tr>
+</table>
+<div class="history-sec table-wrapper">
+    <div class="list-wrapper" >
+        <p class="section-head">Requested Time Off List</p>
+    <div *ngIf="currentUser.timeoffRequest && currentUser.timeoffRequest.length else nodata">
+       
+        <div *ngFor="let list of currentUser.timeoffRequest">
+            <p class="item">{{list | date}}</p>
+        </div>
+    </div>
+    </div>
+    <div class="list-wrapper" >
+        <p class="section-head">Approved Time Off List</p>
+        <div *ngIf="currentUser.approvedList && currentUser.approvedList.length else nodata">
+        <div *ngFor="let list of currentUser.approvedList">
+            <p class="item">{{list | date}}</p>
+        </div>
+    </div>
+    </div>
+</div>
+<ng-template #nodata>
+    <div>No Data</div>
+</ng-template>
+
+
+<button class="btn btn-primary" type='button' (click)="sendTimeOff($event)">
+    {{numberOfDays}} Days - Request Time Off
+</button>

@@ -1,0 +1,23 @@
+﻿<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" *ngIf="user.role === ('manager' | uppercase)" routerLink="/users" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" *ngIf="user.role !== ('manager' |  uppercase)" routerLink="/time-off" routerLinkActive="active">Request Time Off</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+    <alert></alert>
+    <router-outlet></router-outlet>
+</div>
+
+<!-- credits -->
+<div class="text-center mt-4">
+  
+    <p>
+        <a href="mailto:uppumadhava470@gmail.com" target="_blank">Developed by MADHAVA UPPU</a>
+    </p>
+</div>
