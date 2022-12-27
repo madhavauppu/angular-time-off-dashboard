@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,13 +11,16 @@ import { User } from '@app/_models';
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
-
+    httpOptions = {};
     constructor(
         private router: Router,
         private http: HttpClient
     ) {
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
         this.user = this.userSubject.asObservable();
+        this.httpOptions['headers'] = new HttpHeaders({
+            'Content-Type': 'application/json',
+          });
     }
 
     public get userValue(): User {
@@ -30,6 +33,9 @@ export class AccountService {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
                 this.userSubject.next(user);
+                this.httpOptions['headers'] ={
+                    'authorization': `Bearer ${user.token}`
+                }
                 return user;
             }));
     }
@@ -46,7 +52,7 @@ export class AccountService {
     }
 
     getAll() {
-        return this.http.get<User[]>(`http://localhost:1234/products/usersList`);
+        return this.http.get<User[]>(`http://localhost:1234/products/usersList`, this.httpOptions);
     }
 
     getById(id: string) {
@@ -54,7 +60,7 @@ export class AccountService {
     }
 
     update(id, params) {
-        return this.http.put(`http://localhost:1234/products/${id}/update`, params)
+        return this.http.put(`http://localhost:1234/products/${id}/update`, params, this.httpOptions)
             .pipe(map(x => {
                 // update stored user if the logged in user updated their own record
                 if (id == this.userValue.id) {

@@ -61,7 +61,7 @@ export class TimeOffComponent implements OnInit {
                         this.router.navigate(['../'], { relativeTo: this.route });
                     },
                     error: error => {
-                        this.alertService.error(error);
+                        this.alertService.error(error, { autoClose: true });
                         // this.loading = false;
                     }
                 });

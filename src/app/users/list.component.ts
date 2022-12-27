@@ -36,10 +36,6 @@ export class ListComponent implements OnInit {
     deleteUser(arrovedList) {
         const user = this.users.find(x => x.id === arrovedList.id);
         user.isDeleting = true;
-        // this.accountService.delete(arrovedList.id)
-        //     .pipe(first())
-        //     .subscribe(() => this.users = this.users.filter(x => x.id !== arrovedList.id));
-
             this.accountService.update(arrovedList.id, { timeoffRequest: [], numberOfdays: 0, approvedList: arrovedList.timeoffRequest})
             .pipe(first())
             .subscribe({
@@ -49,8 +45,8 @@ export class ListComponent implements OnInit {
                     user.isDeleting = false;
                 },
                 error: error => {
-                    this.alertService.error(error);
-                    // this.loading = false;
+                    this.alertService.error(error, {autoClose: true});
+                    user.isDeleting = false;
                 }
             });
     }
