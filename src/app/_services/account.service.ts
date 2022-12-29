@@ -21,10 +21,22 @@ export class AccountService {
         this.httpOptions['headers'] = new HttpHeaders({
             'Content-Type': 'application/json',
           });
+          this.setToken();
     }
 
     public get userValue(): User {
         return this.userSubject.value;
+    }
+
+    setToken() {
+        const user = localStorage.getItem('user');
+        if(user){
+            const userObj = JSON.parse(user);
+            this.httpOptions['headers'] = {
+                'authorization': `Bearer ${userObj.token}`
+            }
+        }
+        
     }
 
     login(username, password) {
@@ -33,7 +45,7 @@ export class AccountService {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
                 this.userSubject.next(user);
-                this.httpOptions['headers'] ={
+                this.httpOptions['headers'] = {
                     'authorization': `Bearer ${user.token}`
                 }
                 return user;

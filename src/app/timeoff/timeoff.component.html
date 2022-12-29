@@ -27,6 +27,12 @@
         </td>
     </tr>
 </table>
+<div>
+  <label>Type:</label>
+ <select #dropdownType class="form-control leave-type" (change)="changeWebsite(dropdownType.value)">
+  <option *ngFor="let item of leaveType">{{item}}</option> 
+</select>
+</div>
 <div class="history-sec table-wrapper">
     <div class="list-wrapper" >
         <p class="section-head">Requested Time Off List</p>

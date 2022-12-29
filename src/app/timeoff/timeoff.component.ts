@@ -16,6 +16,8 @@ export class TimeOffComponent implements OnInit {
     numberOfDays = 1;
     @ViewChild("dateEle") dateEle: ElementRef<any>;
     currentUser: any;
+    leaveType= ['Sick', 'Vacation', 'Parental', 'Additional Time Off - Paid', 'Additional Time Off - Unpaid']
+  selectedLeaveType: any;
     constructor(private datePipe: DatePipe,
         private accountService: AccountService,
         private alertService: AlertService,
@@ -53,7 +55,8 @@ export class TimeOffComponent implements OnInit {
                 return date[0];
                 });
         
-            this.accountService.update(this.currentUser.id, { timeoffRequest: selectedDates, numberOfdays: this.numberOfDays})
+            this.accountService.update(this.currentUser.id, { timeoffRequest: selectedDates, numberOfdays: this.numberOfDays,
+              selectedLeaveType: this.selectedLeaveType})
                 .pipe(first())
                 .subscribe({
                     next: () => {
@@ -76,6 +79,9 @@ export class TimeOffComponent implements OnInit {
         const date2 = moment(end);
         return date2.diff(date1, 'days') + 1;
 
+    }
+    changeWebsite($event) {
+        this.selectedLeaveType= $event;
     }
 
    
